@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+
+
+    <application
+        android:allowBackup="true"
+        android:name=".data.MyApplication"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/icon"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme._2025_theangels_new"
+        tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+        <meta-data
+            android:name="com.google.android.libraries.places.API_KEY"
+            android:value="@string/google_places_key"/>
+
+        <receiver android:name=".data.widget.EmergencyWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/emergency_widget_info" />
+        </receiver>
+        <receiver android:name=".data.widget.MapWidget" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/map_widget_info"/>
+        </receiver>
+
+
+        <activity
+            android:name=".ui.main.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme._2025_theangels_new">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name=".ui.main.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme._2025_theangels_new" />
+
+        <activity
+            android:name=".ui.onboarding.OnboardingActivity"
+            android:exported="false"
+            android:label="The Angels | Onboarding"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name=".ui.registration.RegistrationActivity"
+            android:exported="false"
+            android:label="The Angels | Registration Step 1"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:exported="false"
+            android:label="The Angels | Home"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.events.list.EventsActivity"
+            android:exported="false"
+            android:label="The Angels | Events"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.educations.EducationActivity"
+            android:exported="false"
+            android:label="The Angels | Education"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false"
+            android:label="The Angels | Profile"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <!-- adjustResize keeps fragments like LocationFragment above the keyboard -->
+        <activity
+            android:name=".ui.events.create.NewEventActivity"
+            android:exported="false"
+            android:label="The Angels | Report Event"
+            android:theme="@style/Theme._2025_theangels_new"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".ui.profile.MyDetailsActivity"
+            android:exported="false"
+            android:label="The Angels | My Details"
+            android:theme="@style/Theme._2025_theangels_new"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".ui.profile.settings.PrivacySettingsActivity"
+            android:exported="false"
+            android:label="The Angels | Privacy Settings"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.settings.EmergencyContactActivity"
+            android:exported="false"
+            android:label="The Angels | Emergency Contact"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.support.SupportActivity"
+            android:exported="false"
+            android:label="The Angels | Support"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.ProjectBookActivity"
+            android:exported="false"
+            android:label="The Angels | Project Book"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.PodcastActivity"
+            android:exported="false"
+            android:label="The Angels | Podcast"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.CreditsActivity"
+            android:exported="false"
+            android:label="The Angels | Credits"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.settings.JoinVolSettingsActivity"
+            android:exported="false"
+            android:label="The Angels | Join as Volunteer"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.profile.settings.MedicalHistoryActivity"
+            android:exported="false"
+            android:label="The Angels | Medical History"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.events.active.EventUserActivity"
+            android:exported="false"
+            android:label="The Angels | User Event"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.events.list.EventDetailsActivity"
+            android:exported="false"
+            android:label="The Angels | Event Details"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.educations.EducationDetailsActivity"
+            android:exported="false"
+            android:label="The Angels | Lesson Details"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+        <activity
+            android:name=".ui.events.active.EventVolActivity"
+            android:exported="false"
+            android:label="The Angels | Volunteer Event"
+            android:theme="@style/Theme._2025_theangels_new"/>
+
+
+
+
+
+        <service
+            android:name="co.median.android.a2025_theangels_new.data.map.LocationUpdateService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <service
+            android:name="co.median.android.a2025_theangels_new.data.services.EmergencyStatusService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+
+
+    </application>
+
+
+
+
+
+</manifest>

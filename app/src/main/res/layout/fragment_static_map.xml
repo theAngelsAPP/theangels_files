@@ -1,0 +1,11 @@
+<!-- Layout fragment_static_map.xml includes: FrameLayout, fragment. Uses the following libraries: Google Maps from Google Play Services. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

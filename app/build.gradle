@@ -1,0 +1,92 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs'
+}
+
+android {
+    namespace 'co.median.android.a2025_theangels_new'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "co.median.android.a2025_theangels_new"
+        minSdk 24
+        targetSdk 35
+        versionCode 3
+        versionName "3.0"
+
+        def mapsKey = project.findProperty("GOOGLE_MAPS_API_KEY") ?: ""
+        resValue "string", "google_maps_key", mapsKey
+        def placesKey = project.findProperty("GOOGLE_PLACES_API_KEY") ?: mapsKey
+        resValue "string", "google_places_key", placesKey
+
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.material
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.coordinatorlayout
+    implementation libs.google.play.services.maps
+    implementation libs.google.play.services.location
+    implementation libs.google.places
+    implementation libs.androidx.paging.runtime
+    implementation libs.firebase.messaging
+    implementation libs.shimmer
+    implementation libs.stepview
+    implementation(libs.cardview)
+    implementation(libs.lottie)
+    implementation(libs.konfetti.xml)
+    implementation libs.androidx.navigation.fragment
+    implementation libs.androidx.navigation.ui
+    implementation libs.google.maps.utils
+    implementation libs.onesignal
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.gson
+    implementation(libs.okhttp)
+    implementation libs.glide
+    annotationProcessor libs.glide.compiler
+
+
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.firebase.common
+    implementation libs.firebase.auth
+    implementation libs.firebase.firestore
+
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+}
+
+task generateJavadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += files(android.bootClasspath)
+    destinationDir = file("$buildDir/docs/javadoc")
+
+    failOnError false
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    options.docEncoding = 'UTF-8'
+
+    exclude '**/*.kt'
+}

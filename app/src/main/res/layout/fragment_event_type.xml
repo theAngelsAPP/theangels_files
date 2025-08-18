@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout fragment_event_type.xml includes: LinearLayout, MaterialButton. Uses the following libraries: Google Material Components library. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white"
+    android:gravity="top">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMedical"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="רפואי"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:backgroundTint="#DCDCDC"
+            app:cornerRadius="20dp"
+            android:elevation="4dp"
+            app:rippleColor="#BDBDBD"
+            android:gravity="center"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSecurity"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="ביטחוני"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:backgroundTint="#DCDCDC"
+            app:cornerRadius="20dp"
+            android:elevation="4dp"
+            app:rippleColor="#BDBDBD"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCar"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="רכב"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:backgroundTint="#DCDCDC"
+            app:cornerRadius="20dp"
+            android:elevation="4dp"
+            app:rippleColor="#BDBDBD"
+            android:gravity="center"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAnimals"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="בעלי חיים"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:backgroundTint="#DCDCDC"
+            app:cornerRadius="20dp"
+            android:elevation="4dp"
+            app:rippleColor="#BDBDBD"
+            android:gravity="center"/>
+    </LinearLayout>
+
+</LinearLayout>

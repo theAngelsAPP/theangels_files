@@ -1,0 +1,168 @@
+// The Angels App Final Project 2025 | Omer Gamliel (209052786) & Batel Gofleyzer (211869409)
+
+package co.median.android.a2025_theangels_new.ui.main;
+
+// IMPORTS
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import android.widget.Toast;
+import co.median.android.a2025_theangels_new.data.services.UserDataManager;
+
+import com.google.android.material.textfield.TextInputEditText;
+
+import co.median.android.a2025_theangels_new.R;
+import co.median.android.a2025_theangels_new.ui.home.HomeActivity;
+import co.median.android.a2025_theangels_new.ui.main.BaseActivity;
+import co.median.android.a2025_theangels_new.ui.onboarding.OnboardingActivity;
+import co.median.android.a2025_theangels_new.ui.registration.RegistrationActivity;
+
+// MainActivity - Handles user login and navigation to registration or onboarding
+public class MainActivity extends BaseActivity {
+
+    // VARIABLES
+    private TextInputEditText usernameInput, passwordInput;
+    private Button loginButton, registerButton;
+    private ProgressBar loginProgressBar;
+
+    // onCreate - Initializes the login screen and checks onboarding state; savedInstanceState holds previous state, returns nothing
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        showTopBar(true);
+        showBottomBar(true);
+
+        // Verify onboarding completion
+        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        boolean onboardingComplete = prefs.getBoolean("onboarding_complete", false);
+
+        // Enter immersive mode
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        );
+
+        // Force RTL layout direction
+        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+        // Redirect to onboarding if needed
+        if (!onboardingComplete) {
+            startActivity(new Intent(this, OnboardingActivity.class));
+            finish();
+            return;
+        }
+
+        // Inflate layout and bind views
+        setContentView(R.layout.activity_main);
+        usernameInput = findViewById(R.id.usernameInput);
+        passwordInput = findViewById(R.id.passwordInput);
+        loginButton = findViewById(R.id.loginButton);
+        registerButton = findViewById(R.id.registerButton);
+        loginProgressBar = findViewById(R.id.loginProgressBar);
+
+        // Disable login until both fields are filled
+        loginButton.setEnabled(false);
+
+        // Watch inputs to enable login dynamically
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        };
+        usernameInput.addTextChangedListener(textWatcher);
+        passwordInput.addTextChangedListener(textWatcher);
+
+        // Handle login button tap
+        loginButton.setOnClickListener(v -> {
+            String email = usernameInput.getText().toString().trim();
+            String password = passwordInput.getText().toString().trim();
+
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "אנא הזן אימייל וסיסמה", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "כתובת האימייל אינה תקינה", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            loginButton.setEnabled(false);
+            loginProgressBar.setVisibility(View.VISIBLE);
+
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, task -> {
+                        loginProgressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            UserDataManager.loadUserDetails(uid, session -> {
+                                Toast.makeText(this, "התחברת בהצלחה", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                finish();
+                            });
+                        } else {
+                            loginButton.setEnabled(true);
+                            Exception e = task.getException();
+                            if (e instanceof FirebaseAuthInvalidUserException) {
+                                Toast.makeText(this, "המשתמש לא קיים", Toast.LENGTH_SHORT).show();
+                            } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                                Toast.makeText(this, "סיסמה שגויה", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "שגיאה: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        });
+
+        // Handle register button tap
+        registerButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
+        });
+    }
+
+    // onStart - Skips login if a user session already exists; no parameters, returns nothing
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            loginProgressBar.setVisibility(View.VISIBLE);
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            UserDataManager.loadUserDetails(uid, session -> {
+                loginProgressBar.setVisibility(View.GONE);
+                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                finish();
+            });
+        }
+    }
+
+    // checkInputs - Enables login button only when both fields contain text; no parameters, returns nothing
+    private void checkInputs() {
+        loginButton.setEnabled(isInputsFilled());
+    }
+
+    // isInputsFilled - Returns true when both username and password fields are not empty; no parameters
+    private boolean isInputsFilled() {
+        return !usernameInput.getText().toString().trim().isEmpty() &&
+                !passwordInput.getText().toString().trim().isEmpty();
+    }
+
+    // getLayoutResourceId - Provides the layout resource for this screen; no parameters, returns layout resource ID
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_main;
+    }
+}

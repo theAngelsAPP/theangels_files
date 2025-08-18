@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout item_medical_condition.xml includes: LinearLayout, MaterialButton, TextView. Uses the following libraries: Google Material Components library. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/rounded_bg"
+    android:padding="12dp"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/tv_condition_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="מחלות לב"
+        android:textSize="16sp"
+        android:textColor="@android:color/black" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_yes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yes"
+        style="@style/PlainButton"
+        android:background="@drawable/rounded_button_gray"
+        android:backgroundTint="@null"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="8dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no"
+        style="@style/PlainButton"
+        android:background="@drawable/rounded_button_gray"
+        android:backgroundTint="@null"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="8dp" />
+</LinearLayout>
