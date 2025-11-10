@@ -2,6 +2,8 @@ const { onDocumentCreated, onDocumentUpdated } = require('firebase-functions/v2/
 const admin = require('firebase-admin');
 const axios = require('axios');
 
+const VOLUNTEER_ASSIGNED_WEBHOOK_URL = process.env.MAKE_VOLUNTEER_ASSIGNED_WEBHOOK_URL || 'MAKE_VOLUNTEER_ASSIGNED_WEBHOOK_URL_PLACEHOLDER';
+
 // ✅ אתחול בטוח
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -54,7 +56,7 @@ exports.notifyVolunteerAssigned = onDocumentUpdated('events/{eventId}', async ev
     };
 
     await axios.post(
-      'https://hook.eu2.make.com/woa6w9v3q5u7j0hq2osip0q4eou776v8',
+      VOLUNTEER_ASSIGNED_WEBHOOK_URL,
       payload
     );
   } catch (error) {

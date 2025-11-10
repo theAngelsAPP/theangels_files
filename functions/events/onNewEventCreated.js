@@ -2,6 +2,9 @@ const { onDocumentCreated } = require('firebase-functions/v2/firestore');
 const admin = require('firebase-admin');
 const axios = require('axios');
 
+const MAPS_STATIC_API_KEY = process.env.GOOGLE_MAPS_API_KEY || 'GOOGLE_MAPS_API_KEY_PLACEHOLDER';
+const NEW_EVENT_WEBHOOK_URL = process.env.MAKE_NEW_EVENT_WEBHOOK_URL || 'MAKE_NEW_EVENT_WEBHOOK_URL_PLACEHOLDER';
+
 if (!admin.apps.length) {
   admin.initializeApp();
 }
@@ -50,7 +53,7 @@ exports.notifyNewEventCreated = onDocumentCreated('events/{eventId}', async even
     let mapImageUrl = '';
     if (eventLocation?.latitude && eventLocation?.longitude) {
       const { latitude, longitude } = eventLocation;
-      mapImageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=16&size=572x247&scale=2&language=iw&markers=color:red%7Clabel:%E2%9A%A0%7C${latitude},${longitude}&key=AIzaSyDYEYDdLi8NDkv7UtRK0_16003frqSUrEA`;
+      mapImageUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${latitude},${longitude}&zoom=16&size=572x247&scale=2&language=iw&markers=color:red%7Clabel:%E2%9A%A0%7C${latitude},${longitude}&key=${MAPS_STATIC_API_KEY}`;
     }
 
     // 🔥 שדות ייעודיים להתראה
@@ -119,7 +122,7 @@ exports.notifyNewEventCreated = onDocumentCreated('events/{eventId}', async even
 
     // שליחת Webhook
     await axios.post(
-      'https://hook.eu2.make.com/j0d613j4o2shma678w9ytgeak42npdp1',
+      NEW_EVENT_WEBHOOK_URL,
       payload
     );
 

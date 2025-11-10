@@ -2,6 +2,8 @@ const { onDocumentUpdated } = require('firebase-functions/v2/firestore');
 const admin = require('firebase-admin');
 const axios = require('axios');
 
+const VOLUNTEER_REGISTERED_WEBHOOK_URL = process.env.MAKE_VOLUNTEER_REGISTERED_WEBHOOK_URL || 'MAKE_VOLUNTEER_REGISTERED_WEBHOOK_URL_PLACEHOLDER';
+
 if (!admin.apps.length) {
   admin.initializeApp();
 }
@@ -34,7 +36,7 @@ exports.notifyVolunteerRegistered = onDocumentUpdated('users/{userId}', async ev
 
   try {
     await axios.post(
-      'https://hook.eu2.make.com/9k12oc4to95bfc6vqtg5dm9a14vg87fm',
+      VOLUNTEER_REGISTERED_WEBHOOK_URL,
       payload
     );
   } catch (err) {
